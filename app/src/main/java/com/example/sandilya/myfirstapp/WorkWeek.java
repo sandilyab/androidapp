@@ -35,6 +35,7 @@ public class WorkWeek extends AppCompatActivity {
         String s = (getIntent().getStringExtra("Selected Date"));
         String[]strArray= s.split(",");
         int month = Integer.parseInt(strArray[0]) ;
+        month = month-1;
         int date = Integer.parseInt(strArray[1]);
         int year = Integer.parseInt(strArray[2]);
         Log.w("myApp",strArray[0]);
