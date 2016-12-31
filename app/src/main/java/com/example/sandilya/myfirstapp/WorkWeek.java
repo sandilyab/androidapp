@@ -53,7 +53,7 @@ public class WorkWeek extends AppCompatActivity {
         int year2 = cal.get(Calendar.YEAR);
         Log.w("myApp", Integer.toString(week));
         SelectedDateView = (TextView) findViewById(R.id.selected_date);
-        SelectedDateView.setText(week);
+        SelectedDateView.setText(week+"");
         Log.w("myApp", "no network");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
