@@ -62,7 +62,9 @@ public class WorkWeek extends AppCompatActivity {
         SelectedDateView.setText("Target Work Week: " +week+"");
         Log.w("myApp", "no network");
 
-
+        //add ww difference
+        SelectedDateView = (TextView) findViewById(R.id.ww_difference);
+        SelectedDateView.setText("Time Left: " +(week-week_orig)+"");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

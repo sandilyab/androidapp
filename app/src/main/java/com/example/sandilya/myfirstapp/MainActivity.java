@@ -78,9 +78,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast myToast = Toast.makeText(getApplicationContext(), "Ouch!", Toast.LENGTH_LONG);
                 myToast.show();
                 final TextView txtView = (TextView) findViewById(R.id.txtView);
-                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+                String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
 
-                txtView.setText(currentDateTimeString);
+                Calendar cal_orig = Calendar.getInstance();
+                int week_orig = cal_orig.get(Calendar.WEEK_OF_YEAR);
+
+                txtView.setText(currentDateTimeString + " Current WW: " + week_orig);
                 txtView.setGravity(Gravity.CENTER);
                 txtView.setTextSize(20);
             }
@@ -123,4 +126,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
