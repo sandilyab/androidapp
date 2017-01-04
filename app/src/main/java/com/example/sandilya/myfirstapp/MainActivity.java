@@ -69,16 +69,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Slide exitTrans = new Slide();
-        exitTrans.setSlideEdge(Gravity.TOP);
-        exitTrans.setDuration(duration);
-        getWindow().setExitTransition(exitTrans);
+        //Slide exitTrans = new Slide();
+       // exitTrans.setSlideEdge(Gravity.TOP);
+        //exitTrans.setDuration(duration);
+       // getWindow().setExitTransition(exitTrans);
 
-        Slide reenterTrans = new Slide();
-        reenterTrans.setDuration(duration);
-        reenterTrans.setSlideEdge(Gravity.TOP);
+       // Slide reenterTrans = new Slide();
+       // reenterTrans.setDuration(duration);
+       // reenterTrans.setSlideEdge(Gravity.TOP);
 
-        getWindow().setReenterTransition(reenterTrans);
+        //getWindow().setReenterTransition(reenterTrans);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

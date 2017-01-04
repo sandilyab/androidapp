@@ -36,10 +36,10 @@ public class WorkWeek extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Transition exitTrans = new Slide();
+        Slide exitTrans = new Slide();
         getWindow().setExitTransition(exitTrans);
 
-        Transition reenterTrans = new Slide();
+        Slide reenterTrans = new Slide();
         getWindow().setReenterTransition(reenterTrans);
 
 
@@ -74,7 +74,10 @@ public class WorkWeek extends AppCompatActivity {
 
         //add ww difference
         SelectedDateView = (TextView) findViewById(R.id.ww_difference);
-        SelectedDateView.setText("Time Left: " +(week-week_orig)+"");
+        SelectedDateView.setText("Time Left: " +(week-week_orig)+" Work Weeks");
+
+        SelectedDateView = (TextView) findViewById(R.id.selected_date_time);
+        SelectedDateView.setText("Target Date: " +strArray[0] +"-" + strArray[1] + "-" + strArray[2]);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
