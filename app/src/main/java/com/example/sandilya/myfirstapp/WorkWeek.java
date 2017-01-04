@@ -11,6 +11,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.transition.Slide;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -32,6 +35,13 @@ public class WorkWeek extends AppCompatActivity {
         setContentView(R.layout.activity_work_week);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Transition exitTrans = new Slide();
+        getWindow().setExitTransition(exitTrans);
+
+        Transition reenterTrans = new Slide();
+        getWindow().setReenterTransition(reenterTrans);
+
 
         //generate current date values
         Calendar cal_orig = Calendar.getInstance();

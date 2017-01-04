@@ -5,6 +5,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.transition.Slide;
+import android.transition.Transition;
 import android.view.View;
 
 public class Main2Activity extends AppCompatActivity {
@@ -17,6 +20,12 @@ public class Main2Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Get the view from activity_main.xml
+
+        Transition enterTrans = new Slide();
+        getWindow().setEnterTransition(enterTrans);
+
+        Transition returnTrans = new Slide();
+        getWindow().setReturnTransition(returnTrans);
 
 
         setContentView(R.layout.activity_main2);

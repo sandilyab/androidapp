@@ -1,6 +1,7 @@
 package com.example.sandilya.myfirstapp;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -12,6 +13,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.Visibility;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
@@ -51,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             Activity activity = getActivity();
             Intent myIntent = new Intent(activity,WorkWeek.class);
             myIntent.putExtra("Selected Date", s);
-            startActivity(myIntent);
+            startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
         }
     }
 
@@ -61,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Transition exitTrans = new Explode();
+        getWindow().setExitTransition(exitTrans);
+
+        Slide reenterTrans = new Slide();
+        reenterTrans.setSlideEdge(Gravity.TOP);
+        getWindow().setReenterTransition(reenterTrans);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             else if ( v.getId() == R.id.perc_button) {
                 Intent myIntent = new Intent(MainActivity.this,
                         Main2Activity.class);
-                startActivity(myIntent);
+                startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
             }
 
             else if (v.getId() == R.id.ww_button) {
