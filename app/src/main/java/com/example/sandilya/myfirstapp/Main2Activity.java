@@ -10,25 +10,28 @@ import android.transition.Slide;
 import android.transition.Transition;
 import android.view.View;
 
-public class Main2Activity extends AppCompatActivity {
 
+
+public class Main2Activity extends AppCompatActivity {
+    Integer duration = 300;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Get the view from activity_main.xml
+        //setContentView(R.layout.activity_main2);
 
         Transition enterTrans = new Slide();
+        enterTrans.setDuration(duration);
         getWindow().setEnterTransition(enterTrans);
 
         Transition returnTrans = new Slide();
+        returnTrans.setDuration(duration);
         getWindow().setReturnTransition(returnTrans);
 
-
-        setContentView(R.layout.activity_main2);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

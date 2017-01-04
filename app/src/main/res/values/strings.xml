@@ -8,4 +8,5 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_work_week">WorkWeek</string>
     <string name="date_pick">Pick a date</string>
+    <string name="duration">150</string>
 </resources>

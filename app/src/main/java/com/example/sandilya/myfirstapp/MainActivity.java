@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button button;
     String hello;
+    Integer duration = 300;
 
     public static TextView SelectedDateView;
 
@@ -68,11 +69,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Transition exitTrans = new Explode();
+        Slide exitTrans = new Slide();
+        exitTrans.setSlideEdge(Gravity.TOP);
+        exitTrans.setDuration(duration);
         getWindow().setExitTransition(exitTrans);
 
         Slide reenterTrans = new Slide();
+        reenterTrans.setDuration(duration);
         reenterTrans.setSlideEdge(Gravity.TOP);
+
         getWindow().setReenterTransition(reenterTrans);
 
 
