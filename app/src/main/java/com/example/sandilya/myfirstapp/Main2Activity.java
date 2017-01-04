@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.transition.Slide;
 import android.transition.Transition;
+import android.view.Gravity;
 import android.view.View;
 
 
@@ -24,11 +25,13 @@ public class Main2Activity extends AppCompatActivity {
         // Get the view from activity_main.xml
         //setContentView(R.layout.activity_main2);
 
-        Transition enterTrans = new Slide();
+        Slide enterTrans = new Slide();
         enterTrans.setDuration(duration);
+        enterTrans.setSlideEdge(Gravity.BOTTOM);
         getWindow().setEnterTransition(enterTrans);
 
-        Transition returnTrans = new Slide();
+        Slide returnTrans = new Slide();
+        returnTrans.setSlideEdge(Gravity.BOTTOM);
         returnTrans.setDuration(duration);
         getWindow().setReturnTransition(returnTrans);
 
