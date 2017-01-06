@@ -132,7 +132,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final TextView tv = (TextView) findViewById(R.id.txtView1);
-                tv.setText(String.valueOf(np.getValue()));
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                Calendar cal_rev = Calendar.getInstance();
+                cal_rev.clear();
+                cal_rev.set(Calendar.WEEK_OF_YEAR, np.getValue());
+                cal_rev.set(Calendar.YEAR, year);
+
+                //Get first day of week
+                Date date_rev = cal_rev.getTime();
+                String strDate = DateFormat.getDateInstance().format(date_rev);
+                tv.setText("WW "+String.valueOf(np.getValue()) +" is "+ strDate);
                 d.dismiss();
             }
         });
@@ -158,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
 
         txtView.setText(currentDateTimeString + " WW: " + week_orig);
         txtView.setGravity(Gravity.CENTER);
-        txtView.setTextSize(20);
     }
 
     @Override

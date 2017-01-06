@@ -22,7 +22,7 @@
         android:layout_marginTop="54dp"
         android:layout_above="@+id/perc_button"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="normal|bold"
         android:fontFamily="sans-serif" />
 
@@ -48,7 +48,7 @@
         android:id="@+id/txtView"
         android:layoutDirection="ltr"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="normal|bold"
         android:fontFamily="sans-serif"
         android:layout_alignParentTop="true"
