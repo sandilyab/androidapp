@@ -15,6 +15,7 @@ import android.transition.Explode;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -36,11 +37,15 @@ public class WorkWeek extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Slide exitTrans = new Slide();
-        getWindow().setExitTransition(exitTrans);
+        Slide enterTrans = new Slide();
+        enterTrans.setDuration(300);
+        enterTrans.setSlideEdge(Gravity.BOTTOM);
+        getWindow().setEnterTransition(enterTrans);
 
-        Slide reenterTrans = new Slide();
-        getWindow().setReenterTransition(reenterTrans);
+        Slide returnTrans = new Slide();
+        returnTrans.setSlideEdge(Gravity.BOTTOM);
+        returnTrans.setDuration(300);
+        getWindow().setReturnTransition(returnTrans);
 
 
         //generate current date values

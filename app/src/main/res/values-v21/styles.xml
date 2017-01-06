@@ -7,6 +7,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
 
         <item name="android:windowContentTransitions">true</item>
+        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
+        <item name="colorControlHighlight">#ffff</item>
 
         <!--
         <item name="android:windowEnterTransition">@android:transition/slide_bottom</item>
@@ -19,5 +21,9 @@
         <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
 
+    </style>
+    <style name="DialogTheme">
+        <item name="android:windowEnterAnimation">@anim/slide_top</item>
+        <item name="android:windowExitAnimation">@anim/slide_bottom</item>
     </style>
 </resources>

@@ -32,28 +32,26 @@
 
     <Button
         android:text="Time"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/tap_buton"
         android:layout_gravity="center_vertical|center_horizontal"
-        tools:text="Tap me!"
         app:layout_anchorGravity="center_vertical|center_horizontal"
         android:onClick="onButtonTap"
-        android:background="#1a237e"
-        android:textColor="@android:color/white" />
-
+        android:textColor="@android:color/white"
+        />
 
     <include layout="@layout/content_main" />
 
     <Button
         android:text="Percentage Calculator"
-        android:layout_width="195dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/perc_button"
         android:layout_gravity="center_vertical|center_horizontal"
         tools:text="Percentage Calculator!"
         android:onClick="onButtonTap"
-        android:background="#1a237e"
+        android:colorButtonNormal="@color/colorPrimaryDark"
         android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -61,16 +59,30 @@
 
     <Button
         android:text="Work Week Calculator"
-        android:layout_width="195dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/ww_button"
         tools:text="Work week Calc"
         android:onClick="onButtonTap"
-        android:background="#1a237e"
+        android:colorButtonNormal="@color/colorPrimaryDark"
         android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="-145dp"
         android:layout_gravity="center_horizontal" />
+    <Button
+        android:text="Date Calculator"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/d_button"
+        tools:text="date Calc"
+        android:onClick="onButtonTap"
+        android:colorButtonNormal="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-290dp"
+        android:layout_gravity="center_horizontal" />
+
 
 </android.support.design.widget.CoordinatorLayout>

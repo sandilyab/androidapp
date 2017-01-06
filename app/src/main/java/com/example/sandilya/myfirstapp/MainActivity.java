@@ -18,12 +18,14 @@ import android.transition.Fade;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.Visibility;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,9 +34,10 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button button;
     String hello;
     Integer duration = 300;
+    private static TextView tv;
+    static Dialog d ;
 
     public static TextView SelectedDateView;
 
@@ -48,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-
             // Create a new instance of DatePickerDialog and return it
             return new DatePickerDialog(getActivity(), this, year, month, day);
         }
@@ -68,18 +70,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //Slide exitTrans = new Slide();
-       // exitTrans.setSlideEdge(Gravity.TOP);
-        //exitTrans.setDuration(duration);
-       // getWindow().setExitTransition(exitTrans);
-
-       // Slide reenterTrans = new Slide();
-       // reenterTrans.setDuration(duration);
-       // reenterTrans.setSlideEdge(Gravity.TOP);
-
-        //getWindow().setReenterTransition(reenterTrans);
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -118,12 +108,49 @@ public class MainActivity extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(), "datePicker");
             }
 
+            else if ( v.getId() == R.id.d_button){
+
+                show();
+
+            }
         // Now we display formattedDate value in TextView
         //TextView txtView = new TextView(this);
-
         //setContentView(txtView);
     }
 
+
+    public void show()
+    {
+       final Dialog d = new Dialog(MainActivity.this);
+
+        d.setTitle("NumberPicker");
+        d.setContentView(R.layout.dialog);
+        Button b1 = (Button) d.findViewById(R.id.button1);
+        Button b2 = (Button) d.findViewById(R.id.button2);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        np.setMaxValue(53);
+        np.setMinValue(0);
+        np.setWrapSelectorWheel(true);
+        b1.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                final TextView tv = (TextView) findViewById(R.id.textView1);
+                tv.setText(String.valueOf(np.getValue()));
+                d.dismiss();
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+        d.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        d.show();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
