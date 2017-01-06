@@ -30,17 +30,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
-    <Button
-        android:text="Time"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/tap_buton"
-        android:layout_gravity="center_vertical|center_horizontal"
-        app:layout_anchorGravity="center_vertical|center_horizontal"
-        android:onClick="onButtonTap"
-        android:textColor="@android:color/white"
-        />
-
     <include layout="@layout/content_main" />
 
     <Button
@@ -68,10 +57,9 @@
         android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-145dp"
         android:layout_gravity="center_horizontal" />
     <Button
-        android:text="Date Calculator"
+        android:text=" Date  Calculator"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/d_button"
@@ -81,8 +69,9 @@
         android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-290dp"
+        android:layout_marginBottom="-145dp"
         android:layout_gravity="center_horizontal" />
+
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        settime();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,18 +88,12 @@ public class MainActivity extends AppCompatActivity {
             if (v.getId() == R.id.tap_buton) {
                 Toast myToast = Toast.makeText(getApplicationContext(), "Ouch!", Toast.LENGTH_LONG);
                 myToast.show();
-                final TextView txtView = (TextView) findViewById(R.id.txtView);
-                String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
-
-                Calendar cal_orig = Calendar.getInstance();
-                int week_orig = cal_orig.get(Calendar.WEEK_OF_YEAR);
-
-                txtView.setText(currentDateTimeString + " Current WW: " + week_orig);
-                txtView.setGravity(Gravity.CENTER);
-                txtView.setTextSize(20);
+                settime();
             }
 
             else if ( v.getId() == R.id.perc_button) {
+                Toast myToast = Toast.makeText(getApplicationContext(), "Ouch!", Toast.LENGTH_LONG);
+                myToast.show();
                 Intent myIntent = new Intent(MainActivity.this,
                         Main2Activity.class);
                 startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
@@ -135,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View v) {
-                final TextView tv = (TextView) findViewById(R.id.textView1);
+                final TextView tv = (TextView) findViewById(R.id.txtView1);
                 tv.setText(String.valueOf(np.getValue()));
                 d.dismiss();
             }
@@ -150,6 +146,19 @@ public class MainActivity extends AppCompatActivity {
         d.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         d.show();
 
+    }
+
+    public void settime (){
+
+        final TextView txtView = (TextView) findViewById(R.id.txtView);
+        String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
+
+        Calendar cal_orig = Calendar.getInstance();
+        int week_orig = cal_orig.get(Calendar.WEEK_OF_YEAR);
+
+        txtView.setText(currentDateTimeString + " WW: " + week_orig);
+        txtView.setGravity(Gravity.CENTER);
+        txtView.setTextSize(20);
     }
 
     @Override
