@@ -17,7 +17,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -85,8 +87,43 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        SetTime();
-        SetWeather();;
+        //SetTime();
+       // SetWeather();
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Utilities"));
+        tabLayout.addTab(tabLayout.newTab().setText("Today"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tasks"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter
+                (getSupportFragmentManager(), tabLayout.getTabCount());
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
+
+
 
         LocationManager lm = (LocationManager)getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -121,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
             if (v.getId() == R.id.tap_buton) {
                 Toast myToast = Toast.makeText(getApplicationContext(), "Refreshing Weather", Toast.LENGTH_SHORT);
                 myToast.show();
-                SetTime();
-                SetWeather();
+                //SetTime();
+                //SetWeather();
             }
 
             else if ( v.getId() == R.id.perc_button) {
@@ -199,17 +236,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void SetTime (){
 
-        final TextView txtView = (TextView) findViewById(R.id.txtView);
-        String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
-
-        Calendar cal_orig = Calendar.getInstance();
-        int week_orig = cal_orig.get(Calendar.WEEK_OF_YEAR);
-
-        txtView.setText(currentDateTimeString + " WW " + week_orig);
-        txtView.setGravity(Gravity.CENTER);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

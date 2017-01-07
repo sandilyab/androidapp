@@ -1,0 +1,68 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:clickable="true"
+    android:background="?attr/selectableItemBackground"
+    android:layout_height="match_parent"
+    tools:context="com.example.sandilya.myfirstapp.TabFragment1">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Tab1"
+        android:id="@+id/txtView1"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="153dp"
+        android:id="@+id/txtView2"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20sp"
+        android:layout_marginTop="80dp"
+        android:textAlignment="center" />
+
+
+
+    <Button
+        android:text="Date  Calculator"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:id="@+id/d_button"
+        tools:text="date Calc"
+        android:onClick="onButtonTap"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="37dp" />
+
+    <Button
+        android:text="Percentage Calculator"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:id="@+id/perc_button"
+        android:layout_gravity="center_horizontal"
+        tools:text="Percentage Calculator!"
+        android:onClick="onButtonTap"
+        android:textColor="@android:color/white"
+        android:layout_above="@+id/ww_button"
+        android:layout_alignLeft="@+id/ww_button"
+        android:layout_alignStart="@+id/ww_button" />
+
+    <Button
+        android:text="Work Week Calculator"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:id="@+id/ww_button"
+        tools:text="Work week Calc"
+        android:onClick="onButtonTap"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/d_button"
+        android:layout_alignLeft="@+id/d_button"
+        android:layout_alignStart="@+id/d_button" />
+
+</FrameLayout>
