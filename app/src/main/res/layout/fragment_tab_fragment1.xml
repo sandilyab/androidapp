@@ -25,20 +25,6 @@
         android:textAlignment="center" />
 
 
-
-    <Button
-        android:text="Date  Calculator"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:id="@+id/d_button"
-        tools:text="date Calc"
-        android:onClick="onButtonTap"
-        android:textColor="@android:color/white"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="37dp" />
-
     <Button
         android:text="Percentage Calculator"
         android:layout_width="150dp"
@@ -46,7 +32,6 @@
         android:id="@+id/perc_button"
         android:layout_gravity="center_horizontal"
         tools:text="Percentage Calculator!"
-        android:onClick="onButtonTap"
         android:textColor="@android:color/white"
         android:layout_above="@+id/ww_button"
         android:layout_alignLeft="@+id/ww_button"
@@ -58,11 +43,21 @@
         android:layout_height="60dp"
         android:id="@+id/ww_button"
         tools:text="Work week Calc"
-        android:onClick="onButtonTap"
         android:textColor="@android:color/white"
         android:layout_gravity="center_horizontal"
         android:layout_above="@+id/d_button"
         android:layout_alignLeft="@+id/d_button"
         android:layout_alignStart="@+id/d_button" />
+
+    <Button
+        android:text="Date  Calculator"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:id="@+id/d_button"
+        tools:text="date Calc"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="150dp"
+        android:layout_marginBottom="37dp" />
 
 </FrameLayout>

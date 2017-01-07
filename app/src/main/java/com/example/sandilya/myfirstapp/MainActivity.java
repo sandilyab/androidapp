@@ -153,86 +153,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void onButtonTap(View v) {
 
-            if (v.getId() == R.id.tap_buton) {
-                Toast myToast = Toast.makeText(getApplicationContext(), "Refreshing Weather", Toast.LENGTH_SHORT);
-                myToast.show();
-                //SetTime();
-                //SetWeather();
-            }
-
-            else if ( v.getId() == R.id.perc_button) {
-                Toast myToast = Toast.makeText(getApplicationContext(), "Ouch!", Toast.LENGTH_LONG);
-                myToast.show();
-                Intent myIntent = new Intent(MainActivity.this,
-                        Main2Activity.class);
-                startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
-            }
-
-            else if (v.getId() == R.id.ww_button) {
-                DialogFragment newFragment = new DatePickerFragment();
-                newFragment.show(getSupportFragmentManager(), "datePicker");
-            }
-
-            else if ( v.getId() == R.id.d_button){
-                show();
-            }
-        // Now we display formattedDate value in TextView
-        //TextView txtView = new TextView(this);
-        //setContentView(txtView);
-    }
 
 
     public void show()
     {
-       final Dialog d = new Dialog(MainActivity.this);
-
-        d.setTitle("NumberPicker");
-        d.setContentView(R.layout.dialog);
-        Button b1 = (Button) d.findViewById(R.id.button1);
-        Button b2 = (Button) d.findViewById(R.id.button2);
-        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
-        np.setMaxValue(53);
-        np.setMinValue(0);
-        np.setWrapSelectorWheel(true);
-        b1.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                final TextView tv = (TextView) findViewById(R.id.txtView1);
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                Calendar cal_rev = Calendar.getInstance();
-                cal_rev.clear();
-                cal_rev.set(Calendar.WEEK_OF_YEAR, np.getValue());
-                cal_rev.set(Calendar.YEAR, year);
-
-                //Get first day of week
-                Date date_rev = cal_rev.getTime();
-                final String strDate = DateFormat.getDateInstance().format(date_rev);
-                //tv.setText("WW "+String.valueOf(np.getValue()) +" is "+ strDate);
-
-                d.dismiss();
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Do something after 5s = 5000ms
-                        DispDialog(strDate,String.valueOf(np.getValue()) );
-                    }
-                }, 300);
-            }
-        });
-        b2.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                d.dismiss();
-            }
-        });
-        d.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
-        d.show();
 
     }
 

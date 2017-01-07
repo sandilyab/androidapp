@@ -1,15 +1,26 @@
 package com.example.sandilya.myfirstapp;
 
+import android.app.ActivityOptions;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -26,7 +37,7 @@ import java.util.Date;
 public class TabFragment1 extends Fragment {
 
 
-    private OnFragmentInteractionListener mListener;
+   // private OnFragmentInteractionListener mListener;
     public static TabFragment1 newInstance() {
         TabFragment1 fragment = new TabFragment1();
         return fragment;
@@ -62,6 +73,39 @@ public class TabFragment1 extends Fragment {
             txtView.setText(currentDateTimeString + " WW " + week_orig);
             txtView.setGravity(Gravity.CENTER);
 
+            Button dc = (Button) v.findViewById(R.id.d_button);
+
+            dc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    View v = getActivity().getLayoutInflater().inflate(R.layout.dialog, null);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder (getActivity());
+                    final NumberPicker picker = new NumberPicker(getActivity());
+                    picker.setMinValue(0);
+                    picker.setMaxValue(5);
+                    final FrameLayout parent = new FrameLayout(getActivity());
+                    parent.addView(picker, new FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.WRAP_CONTENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT,
+                            Gravity.CENTER));
+                    builder.setView(parent);
+                    builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent("android.intent.action.VIEW", Uri.parse("http://www..com"));
+                            Bundle b = new Bundle();
+                            b.putBoolean("new_window", true); //sets new window
+                            intent.putExtras(b);
+                            startActivity(intent);
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.cancel, null);
+                    Dialog dialog = builder.create();
+                    dialog.show();
+
+
+                }
+            });
 
         return v;
     }
@@ -77,8 +121,5 @@ public class TabFragment1 extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
 }
