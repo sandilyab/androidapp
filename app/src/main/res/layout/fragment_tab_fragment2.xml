@@ -69,4 +69,17 @@
         android:layout_marginTop="390dp"
         />
 
+    <Button
+        android:text="F5"
+        android:id="@+id/tap_buton"
+        android:textColor="@android:color/white"
+        android:layout_gravity="top|right"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:background="@drawable/button_round"
+        android:clickable="true"
+        android:padding="15dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginRight="15dp"
+        android:textSize="12sp" />
 </FrameLayout>

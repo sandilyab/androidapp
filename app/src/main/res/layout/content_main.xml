@@ -27,22 +27,7 @@
         android:textStyle="normal|bold"
         android:fontFamily="sans-serif" />
 
-    <Button
-        android:text="F5"
-        android:id="@+id/tap_buton"
-        android:onClick="onButtonTap"
-        android:textColor="@android:color/white"
-        app:layout_anchorGravity="top|center_horizontal"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
-        android:background="@drawable/button_round"
-        android:clickable="true"
-        android:padding="15dp"
-        android:textSize="12sp" />
+
 
 
 
