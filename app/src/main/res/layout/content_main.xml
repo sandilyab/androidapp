@@ -89,7 +89,7 @@
         android:layout_alignEnd="@+id/perc_button" />
 
     <Button
-        android:text=" Date  Calculator"
+        android:text="Date  Calculator"
         android:layout_width="150dp"
         android:layout_height="60dp"
         android:id="@+id/d_button"

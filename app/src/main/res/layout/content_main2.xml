@@ -24,4 +24,21 @@
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="normal|bold" />
+
+    <TextSwitcher
+        android:id="@+id/textSwitcher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <Button
+        android:text="Date  Calculator"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:id="@+id/d_button"
+        tools:text="date Calc"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="37dp" />
 </RelativeLayout>
