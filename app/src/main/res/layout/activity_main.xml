@@ -34,46 +34,6 @@
 
     <include layout="@layout/content_main" />
 
-    <Button
-        android:text="Percentage Calculator"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:id="@+id/perc_button"
-        android:layout_gravity="center_vertical|center_horizontal"
-        tools:text="Percentage Calculator!"
-        android:onClick="onButtonTap"
-        android:colorButtonNormal="@color/colorPrimaryDark"
-        android:textColor="@android:color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="145dp" />
-
-    <Button
-        android:text="Work Week Calculator"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:id="@+id/ww_button"
-        tools:text="Work week Calc"
-        android:onClick="onButtonTap"
-        android:colorButtonNormal="@color/colorPrimaryDark"
-        android:textColor="@android:color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal" />
-    <Button
-        android:text=" Date  Calculator"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:id="@+id/d_button"
-        tools:text="date Calc"
-        android:onClick="onButtonTap"
-        android:colorButtonNormal="@color/colorPrimaryDark"
-        android:textColor="@android:color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-145dp"
-        android:layout_gravity="center_horizontal" />
-
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -4,15 +4,24 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.transition.Explode;
 import android.transition.Fade;
 import android.transition.Slide;
@@ -32,12 +41,17 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.util.Date;
 
+
 public class MainActivity extends AppCompatActivity {
 
     String hello;
     Integer duration = 300;
     private static TextView tv;
     static Dialog d ;
+    final Context context = this;
+
+    TextView cityField, detailsField, currentTemperatureField, humidity_field, pressure_field, weatherIcon, updatedField;
+    Typeface weatherFont;
 
     public static TextView SelectedDateView;
 
@@ -71,7 +85,26 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        settime();
+        SetTime();
+        SetWeather();;
+
+        LocationManager lm = (LocationManager)getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        // Getting the name of the provider that meets the criteria
+        String provider = lm.getBestProvider(criteria, true);
+
+        //Location location = locationManager.getLastKnownLocation(provider);
+        //LocationManager lm = (LocationManager)getSystemService(LOCATION_SERVICE);
+
+        Location location = lm.getLastKnownLocation(provider);
+        Log.d("S", "Entering");
+        if(location != null) {
+            Double lat = location.getLatitude();
+            Double lon = location.getLongitude();
+            Log.d("S","shoudl");
+            Log.d("c", lat.toString());
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,9 +119,10 @@ public class MainActivity extends AppCompatActivity {
     public void onButtonTap(View v) {
 
             if (v.getId() == R.id.tap_buton) {
-                Toast myToast = Toast.makeText(getApplicationContext(), "Ouch!", Toast.LENGTH_LONG);
+                Toast myToast = Toast.makeText(getApplicationContext(), "Refreshing Weather", Toast.LENGTH_SHORT);
                 myToast.show();
-                settime();
+                SetTime();
+                SetWeather();
             }
 
             else if ( v.getId() == R.id.perc_button) {
@@ -105,9 +139,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             else if ( v.getId() == R.id.d_button){
-
                 show();
-
             }
         // Now we display formattedDate value in TextView
         //TextView txtView = new TextView(this);
@@ -141,9 +173,18 @@ public class MainActivity extends AppCompatActivity {
 
                 //Get first day of week
                 Date date_rev = cal_rev.getTime();
-                String strDate = DateFormat.getDateInstance().format(date_rev);
-                tv.setText("WW "+String.valueOf(np.getValue()) +" is "+ strDate);
+                final String strDate = DateFormat.getDateInstance().format(date_rev);
+                //tv.setText("WW "+String.valueOf(np.getValue()) +" is "+ strDate);
+
                 d.dismiss();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Do something after 5s = 5000ms
+                        DispDialog(strDate,String.valueOf(np.getValue()) );
+                    }
+                }, 300);
             }
         });
         b2.setOnClickListener(new View.OnClickListener()
@@ -158,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void settime (){
+    public void SetTime (){
 
         final TextView txtView = (TextView) findViewById(R.id.txtView);
         String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
@@ -166,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         Calendar cal_orig = Calendar.getInstance();
         int week_orig = cal_orig.get(Calendar.WEEK_OF_YEAR);
 
-        txtView.setText(currentDateTimeString + " WW: " + week_orig);
+        txtView.setText(currentDateTimeString + " WW " + week_orig);
         txtView.setGravity(Gravity.CENTER);
     }
 
@@ -189,6 +230,52 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    void DispDialog (String s, String ww) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+
+        // set title
+        alertDialogBuilder.setTitle("Work Week "+ww );
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(s)
+                .setCancelable(false)
+                .setNegativeButton("OK",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+    void SetWeather () {
+
+        weatherFont = Typeface.createFromAsset(getAssets(), "fonts/weathericons-regular-webfont.ttf");
+        cityField = (TextView)findViewById(R.id.city_field);
+        detailsField = (TextView)findViewById(R.id.details_field);
+        currentTemperatureField = (TextView)findViewById(R.id.current_temperature_field);
+        weatherIcon = (TextView)findViewById(R.id.weather_icon);
+        weatherIcon.setTypeface(weatherFont);
+
+        Function.placeIdTask asyncTask =new Function.placeIdTask(new Function.AsyncResponse() {
+            public void processFinish(String weather_city, String weather_description, String weather_temperature, String weather_humidity, String weather_pressure, String weather_updatedOn, String weather_iconText, String sun_rise) {
+
+                cityField.setText(weather_city);
+                detailsField.setText(weather_description);
+                currentTemperatureField.setText(weather_temperature);
+                weatherIcon.setText(Html.fromHtml(weather_iconText,0));
+            }
+        });
+        asyncTask.execute( "45.52", "-122.99");
     }
 
 }
