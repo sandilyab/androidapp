@@ -1,22 +1,37 @@
 package com.example.sandilya.myfirstapp;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.app.FragmentActivity;
+
 
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+
+import static android.R.id.tabhost;
+import static com.example.sandilya.myfirstapp.R.id.tab_layout;
+import static com.example.sandilya.myfirstapp.R.id.toolbar;
 
 
 /**
@@ -54,12 +69,21 @@ public class TabFragment2 extends Fragment {
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_tab_fragment2, container, false);
         SetWeather(v);
+        SetWeatherForecast(v);
+
+        //FUTURE CHANGES
+        //window.setStatusBarColor(Color.BLUE);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
+        //TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tab_layout);
+        //tabLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        //Window window = getActivity().getWindow();
+
 
         swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
             @Override
             public void onRefresh() {
-                //final View v = inflater.inflate(R.layout.fragment_tab_fragment2, container, false);
+               // final View v = inflater.inflate(R.layout.fragment_tab_fragment2, container, false);
                 Toast.makeText(getContext(), "Refresh", Toast.LENGTH_SHORT).show();
                 SetWeather(getView());
                 SetWeatherForecast(getView());
@@ -82,7 +106,7 @@ public class TabFragment2 extends Fragment {
 
 
 
-    void SetWeather(View v) {
+    void SetWeather(final View v) {
 
         weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weathericons-regular-webfont.ttf");
         cityField = (TextView)v.findViewById(R.id.city_field);
@@ -103,6 +127,9 @@ public class TabFragment2 extends Fragment {
                 weatherIcon.setText(Html.fromHtml(weather_iconText,0));
                 Date date_rev = Calendar.getInstance().getTime();
                 update_time.setText(DateFormat.getDateTimeInstance().format(date_rev));
+
+                SetWeatherBackground (weather_iconText, v);
+
             }
         });
         asyncTask.execute( "45.52", "-122.99");
@@ -161,5 +188,41 @@ public class TabFragment2 extends Fragment {
         asyncTask1.execute("45.52", "-122.99");
 
     }
+    void SetWeatherBackground (String weather_iconText, View v) {
+        switch (weather_iconText) {
+            //Clear day; like its gonna ever happen in hillsboro!
+            case "&#xf00d;":
+                v.setBackgroundColor(Color.parseColor("#039be5"));
+                break;
+            //Clear night
+            case "&#xf02e;":
+                v.setBackgroundColor(Color.parseColor("#3F51B5"));
+                break;
+            //Thunderstorm
+            case "&#xf01e;":
+                v.setBackgroundColor(Color.parseColor("#212121"));
+                break;
+            //Light drizzle. gonna be seeing this a lot
+            case "&#xf01c;":
+                v.setBackgroundColor(Color.parseColor("#2d7baf"));
+                break;
+            //windy/foggy
+            case "&#xf014;":
+                v.setBackgroundColor(Color.parseColor("#90a4ae"));
+                break;
+            //Cloudy
+            case "&#xf013;":
+                v.setBackgroundColor(Color.parseColor("#b0bec5"));
+                break;
+            //Snow
+            case "&#xf01b;":
+                v.setBackgroundColor(Color.parseColor("#c5cae9"));
+                break;
+            //The all time fav! RAIN bitch!
+            case "&#xf019;":
+                v.setBackgroundColor(Color.parseColor("#5c6bc0"));
+                break;
+        }
 
+    }
 }

@@ -27,17 +27,6 @@
             android:textAlignment="center"
             />
 
-        <TextView
-            android:id="@+id/forecast_time1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="update time1"
-            android:textColor="@android:color/white"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="250dp"
-            android:textAlignment="center" />
-
 
         <TextView
             android:id="@+id/forecast_temperature_field1"
@@ -152,6 +141,17 @@
             android:layout_marginTop="25dp"
             android:textAlignment="center"
             android:layout_marginLeft="250dp" />
+
+        <TextView
+            android:id="@+id/forecast_time1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="update time1"
+            android:textColor="@android:color/white"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="250dp"
+            android:textAlignment="center" />
 
 
     </android.support.v7.widget.CardView>
