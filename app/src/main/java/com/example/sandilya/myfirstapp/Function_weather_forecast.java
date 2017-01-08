@@ -15,25 +15,29 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
-public class Function {
+public class Function_weather_forecast {
 
     private static final String OPEN_WEATHER_MAP_URL =
+            "http://api.openweathermap.org/data/2.5/forecast?lat=%s&lon=%s&units=imperial";
+    private static final String OPEN_WEATHER_MAP_NOW_URL =
             "http://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=imperial";
 
     private static final String OPEN_WEATHER_MAP_API = "5ad010148f39a40555954ca3c7423adc";
 
-    public static String setWeatherIcon(int actualId, long sunrise, long sunset){
+    public static String setWeatherIcon(int actualId, int day_night){
         int id = actualId / 100;
         String icon = "";
         if(actualId == 800){
-            long currentTime = new Date().getTime();
-            if(currentTime>=sunrise && currentTime<sunset) {
+            if(day_night == 1) {
                 icon = "&#xf00d;";
-            } else {
+            } else  {
                 icon = "&#xf02e;";
             }
         } else {
@@ -56,10 +60,9 @@ public class Function {
     }
 
 
-
     public interface AsyncResponse {
 
-        void processFinish(String output1, String output2, String output3, String output4, String output5, String output6, String output7, String output8);
+        void processFinish(String[] output1, String[] output2, int[] output3, int[] output4, String[] output5);
     }
 
 
@@ -88,21 +91,52 @@ public class Function {
         protected void onPostExecute(JSONObject json) {
             try {
                 if(json != null){
-                    JSONObject details = json.getJSONArray("weather").getJSONObject(0);
-                    JSONObject main = json.getJSONObject("main");
-                    DateFormat df = DateFormat.getDateTimeInstance();
+                    //JSONObject details = json.getJSONArray("weather").getJSONObject(0);
+                    //JSONObject main = json.getJSONObject("main");
+                    DateFormat df = DateFormat.getTimeInstance();
 
-                    String city = json.getString("name").toUpperCase(Locale.US) + ", " + json.getJSONObject("sys").getString("country");
-                    String description = details.getString("description").toUpperCase(Locale.US);
-                    String temperature = String.format("%.2f", main.getDouble("temp"))+ "°";
-                    String humidity = main.getString("humidity") + "%";
-                    String pressure = main.getString("pressure") + " hPa";
-                    String updatedOn = df.format(new Date(json.getLong("dt")*1000));
-                    String iconText = setWeatherIcon(details.getInt("id"),
-                            json.getJSONObject("sys").getLong("sunrise") * 1000,
-                            json.getJSONObject("sys").getLong("sunset") * 1000);
+                    //String city = json.getString("name").toUpperCase(Locale.US) + ", " + json.getJSONObject("sys").getString("country");
+                    //String city_tag = json.getJSONObject("city").getString("name").toUpperCase(Locale.US);
+                    //String city = city_tag+","+json.getJSONObject("city").getString("country");
 
-                    delegate.processFinish(city, description, temperature, humidity, pressure, updatedOn, iconText, ""+ (json.getJSONObject("sys").getLong("sunrise") * 1000));
+                    String[] temperature = new String[4];
+                    String[] iconText = new String[4];
+                    int[] id =new int[4];
+                    String[] updatedOn= new String[4];
+                    int[] day_night =new int[4];
+
+                    //JSONObject forecast_0 = json.getJSONArray("list").getJSONObject(0);
+
+                    for (int i=0; i<4; i++) {
+                        //SPlit weather ID from obj/list/waether/id
+                        JSONObject list_0 = json.getJSONArray("list").getJSONObject(i);
+                        JSONObject w_0 = list_0.getJSONArray("weather").getJSONObject(0);
+                        //System.out.println("1" + w_0);
+                        id[i] = w_0.getInt("id");
+
+                        //Extract day night info. 1==day, 0==night API has no sunrise/sunset info
+                        String s = w_0.getString("icon");
+                        for (int j = 0; j < s.length(); j++) {
+                            char charAt2 = s.charAt(j);
+                            if (charAt2 == 'd') {
+                                //System.out.println(charAt2 + "Its day");
+                                day_night[i] = 1;
+                            } else if (charAt2 == 'n') {
+                                day_night[i] = 0;
+                                //System.out.println(charAt2 + " Its night");
+                            }
+                        }
+
+                        //Split temp from obj/id/main/temp
+                        JSONObject t_details = list_0.getJSONObject("main");
+                        temperature[i] = String.format("%.2f", t_details.getDouble("temp")) + "°";
+
+                        updatedOn[i] = df.format(new Date(list_0.getLong("dt")*1000));
+
+                        iconText[i] = setWeatherIcon (id[i],day_night[i]);
+                    }
+
+                    delegate.processFinish(updatedOn, temperature, id, day_night, iconText);
                 }
             } catch (JSONException e) {
                 Log.e("LOG_TAG", "Cannot process JSON results", e);
@@ -110,10 +144,6 @@ public class Function {
 
         }
     }
-
-
-
-
 
 
     public static JSONObject getWeatherJSON(String lat, String lon){

@@ -6,72 +6,11 @@
     android:background="?attr/selectableItemBackground"
     tools:context="com.example.sandilya.myfirstapp.TabFragment2">
 
-
-
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Tab2"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/weather_icon"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:textColor="@android:color/white"
-        tools:text="weather icon"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="90sp"
-        android:layout_marginTop="175dp"
-        android:textAlignment="center"
-        />
-
-    <TextView
-        android:id="@+id/city_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="city"
-        android:textColor="@android:color/white"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginTop="150dp"
-        android:textAlignment="center" />
 
 
-    <TextView
-        android:id="@+id/details_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="details"
-        android:textColor="@android:color/white"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textAlignment="center"
-        android:layout_marginTop="365dp"
-        />
+    <include layout="@layout/swipe_refresh_layout_weather"
+        android:visibility="visible" />
 
-    <TextView
-        android:id="@+id/current_temperature_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="TEMP"
-        android:textColor="@android:color/white"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="50sp"
-        android:textAlignment="center"
-        android:layout_marginTop="300dp"
-        />
-    <TextView
-        android:id="@+id/humidity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="TEMP"
-        android:textColor="@android:color/white"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textAlignment="center"
-        android:layout_marginTop="390dp"
-        />
-
-    <include layout="@layout/swipe_refresh_layout_weather" />
-    <include layout="@layout/card_view_forecast" />
 
 </FrameLayout>

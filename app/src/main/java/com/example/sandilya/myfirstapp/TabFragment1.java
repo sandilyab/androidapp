@@ -72,6 +72,7 @@ public class TabFragment1 extends Fragment {
             txtView.setText(currentDateTimeString + " WW " + week_orig);
             txtView.setGravity(Gravity.CENTER);
 
+            //Handle WW to Date dialog
             Button dc = (Button) v.findViewById(R.id.d_button);
             dc.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -124,6 +125,12 @@ public class TabFragment1 extends Fragment {
                     dialog.show();
                 }
             });
+
+        //Handle Date picker to WW Dialog
+
+
+
+
 
         return v;
     }

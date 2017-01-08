@@ -1,19 +1,22 @@
 package com.example.sandilya.myfirstapp;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -27,7 +30,10 @@ import android.widget.Toast;
 public class TabFragment2 extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     SwipeRefreshLayout swipeLayout;
-    TextView cityField, detailsField, currentTemperatureField, humidity_field, pressure_field, weatherIcon, updatedField;
+    TextView cityField, detailsField,  humidity_field, weatherIcon, updatedOn;
+    TextView currentTemperatureField1, currentTemperatureField2, currentTemperatureField3, currentTemperatureField, currentTemperatureField4;
+    TextView updatedOn1, updatedOn2, updatedOn3, updatedOn4;
+    TextView weatherIcon1, weatherIcon2, weatherIcon3, weatherIcon4;
     Typeface weatherFont;
     public TabFragment2() {
         // Required empty public constructor
@@ -47,7 +53,7 @@ public class TabFragment2 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_tab_fragment2, container, false);
-        Integer result =SetWeather(v);
+        SetWeather(v);
 
         swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
@@ -56,6 +62,7 @@ public class TabFragment2 extends Fragment {
                 //final View v = inflater.inflate(R.layout.fragment_tab_fragment2, container, false);
                 Toast.makeText(getContext(), "Refresh", Toast.LENGTH_SHORT).show();
                 SetWeather(getView());
+                SetWeatherForecast(getView());
                 if(swipeLayout.isRefreshing()) {
                     swipeLayout.setRefreshing(false);
                     Toast.makeText(getContext(), "Weather Updated", Toast.LENGTH_SHORT).show();
@@ -75,7 +82,7 @@ public class TabFragment2 extends Fragment {
 
 
 
-    int SetWeather(View v) {
+    void SetWeather(View v) {
 
         weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weathericons-regular-webfont.ttf");
         cityField = (TextView)v.findViewById(R.id.city_field);
@@ -84,7 +91,9 @@ public class TabFragment2 extends Fragment {
         humidity_field = (TextView) v.findViewById(R.id.humidity);
         weatherIcon = (TextView)v.findViewById(R.id.weather_icon);
         weatherIcon.setTypeface(weatherFont);
-        Function.placeIdTask asyncTask =new Function.placeIdTask(new Function.AsyncResponse() {
+        final TextView update_time = (TextView) v.findViewById(R.id.time_field);
+
+        Function_weather.placeIdTask asyncTask =new Function_weather.placeIdTask(new Function_weather.AsyncResponse() {
             public void processFinish(String weather_city, String weather_description, String weather_temperature, String weather_humidity, String weather_pressure, String weather_updatedOn, String weather_iconText, String sun_rise) {
 
                 cityField.setText(weather_city);
@@ -92,10 +101,65 @@ public class TabFragment2 extends Fragment {
                 humidity_field.setText("Humidity "+weather_humidity);
                 currentTemperatureField.setText(weather_temperature);
                 weatherIcon.setText(Html.fromHtml(weather_iconText,0));
+                Date date_rev = Calendar.getInstance().getTime();
+                update_time.setText(DateFormat.getDateTimeInstance().format(date_rev));
             }
         });
         asyncTask.execute( "45.52", "-122.99");
-        return 1;
+    }
+
+    void SetWeatherForecast(View v) {
+        weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weathericons-regular-webfont.ttf");
+
+        currentTemperatureField1 = (TextView) v.findViewById(R.id.forecast_temperature_field1);
+        weatherIcon1 = (TextView) v.findViewById(R.id.weather_forecast_icon1);
+        updatedOn1 = (TextView) v.findViewById(R.id.forecast_time1);
+
+        currentTemperatureField2 = (TextView) v.findViewById(R.id.forecast_temperature_field2);
+        weatherIcon2 = (TextView) v.findViewById(R.id.weather_forecast_icon2);
+        updatedOn2 = (TextView) v.findViewById(R.id.forecast_time2);
+
+        currentTemperatureField3 = (TextView) v.findViewById(R.id.forecast_temperature_field3);
+        weatherIcon3 = (TextView) v.findViewById(R.id.weather_forecast_icon3);
+        updatedOn3 = (TextView) v.findViewById(R.id.forecast_time3);
+
+        currentTemperatureField4 = (TextView) v.findViewById(R.id.forecast_temperature_field4);
+        weatherIcon4 = (TextView) v.findViewById(R.id.weather_forecast_icon4);
+        updatedOn4 = (TextView) v.findViewById(R.id.forecast_time4);
+
+        weatherIcon1.setTypeface(weatherFont);
+        weatherIcon2.setTypeface(weatherFont);
+        weatherIcon3.setTypeface(weatherFont);
+        weatherIcon4.setTypeface(weatherFont);
+
+        Function_weather_forecast.placeIdTask asyncTask1 =new Function_weather_forecast.placeIdTask(new Function_weather_forecast.AsyncResponse() {
+
+            public void processFinish (String[] updateOn, String[]  temperature,int[] id, int[] day_night, String[] weather_iconText) {
+
+                Log.d("S",Arrays.toString(day_night) );
+                Log.d("S",Arrays.toString(weather_iconText) );
+                Log.d("S",weather_iconText[0]);
+
+                currentTemperatureField1.setText(temperature[0]);
+                weatherIcon1.setText(Html.fromHtml(weather_iconText[0],0));
+                updatedOn1.setText(updateOn[0]);
+
+                currentTemperatureField2.setText(temperature[1]);
+                weatherIcon2.setText(Html.fromHtml(weather_iconText[1],0));
+                updatedOn2.setText(updateOn[1]);
+
+                currentTemperatureField3.setText(temperature[2]);
+                weatherIcon3.setText(Html.fromHtml(weather_iconText[2],0));
+                updatedOn3.setText(updateOn[2]);
+
+                currentTemperatureField4.setText(temperature[3]);
+                weatherIcon4.setText(Html.fromHtml(weather_iconText[3],0));
+                updatedOn4.setText(updateOn[3]);
+            }
+        });
+
+        asyncTask1.execute("45.52", "-122.99");
+
     }
 
 }

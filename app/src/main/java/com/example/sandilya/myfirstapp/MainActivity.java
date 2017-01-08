@@ -138,14 +138,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("c", lat.toString());
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     public void onButtonTap(View v) {
@@ -167,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         //TextView txtView = new TextView(this);
         //setContentView(txtView);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
