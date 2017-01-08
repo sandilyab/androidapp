@@ -1,19 +1,14 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:clickable="true"
-    android:background="?attr/selectableItemBackground"
-    tools:context="com.example.sandilya.myfirstapp.TabFragment2">
+    android:layout_marginTop="30dp"
+    android:layout_height="match_parent">
 
-
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Tab2"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/weather_icon"
@@ -71,7 +66,20 @@
         android:layout_marginTop="390dp"
         />
 
-    <include layout="@layout/swipe_refresh_layout_weather" />
-    <include layout="@layout/card_view_forecast" />
+    <Button
+        android:text="F5"
+        android:id="@+id/tap_buton"
+        android:textColor="@android:color/white"
+        android:layout_gravity="top|right"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:background="@drawable/button_round"
+        android:clickable="true"
+        android:padding="15dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginRight="15dp"
+        android:textSize="12sp" />
 
-</FrameLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>
+

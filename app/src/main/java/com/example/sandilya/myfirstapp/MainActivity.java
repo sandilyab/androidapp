@@ -52,11 +52,6 @@ public class MainActivity extends AppCompatActivity {
     static Dialog d ;
     final Context context = this;
 
-    TextView cityField, detailsField, currentTemperatureField, humidity_field, pressure_field, weatherIcon, updatedField;
-    Typeface weatherFont;
-
-    public static TextView SelectedDateView;
-
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
@@ -153,15 +148,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void onButtonTap(View v) {
 
+            if ( v.getId() == R.id.perc_button) {
+                Toast myToast = Toast.makeText(getApplicationContext(), "Ouch!", Toast.LENGTH_LONG);
+                myToast.show();
+                Intent myIntent = new Intent(MainActivity.this,
+                        Main2Activity.class);
+                startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
+            }
 
+            else if (v.getId() == R.id.ww_button) {
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(getSupportFragmentManager(), "datePicker");
+            }
 
-    public void show()
-    {
-
+        // Now we display formattedDate value in TextView
+        //TextView txtView = new TextView(this);
+        //setContentView(txtView);
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -209,25 +214,6 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    void SetWeather () {
 
-        weatherFont = Typeface.createFromAsset(getAssets(), "fonts/weathericons-regular-webfont.ttf");
-        cityField = (TextView)findViewById(R.id.city_field);
-        detailsField = (TextView)findViewById(R.id.details_field);
-        currentTemperatureField = (TextView)findViewById(R.id.current_temperature_field);
-        weatherIcon = (TextView)findViewById(R.id.weather_icon);
-        weatherIcon.setTypeface(weatherFont);
-
-        Function.placeIdTask asyncTask =new Function.placeIdTask(new Function.AsyncResponse() {
-            public void processFinish(String weather_city, String weather_description, String weather_temperature, String weather_humidity, String weather_pressure, String weather_updatedOn, String weather_iconText, String sun_rise) {
-
-                cityField.setText(weather_city);
-                detailsField.setText(weather_description);
-                currentTemperatureField.setText(weather_temperature);
-                weatherIcon.setText(Html.fromHtml(weather_iconText,0));
-            }
-        });
-        asyncTask.execute( "45.52", "-122.99");
-    }
 
 }

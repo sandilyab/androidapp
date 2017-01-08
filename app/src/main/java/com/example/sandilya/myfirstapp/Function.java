@@ -103,7 +103,6 @@ public class Function {
                             json.getJSONObject("sys").getLong("sunset") * 1000);
 
                     delegate.processFinish(city, description, temperature, humidity, pressure, updatedOn, iconText, ""+ (json.getJSONObject("sys").getLong("sunrise") * 1000));
-
                 }
             } catch (JSONException e) {
                 Log.e("LOG_TAG", "Cannot process JSON results", e);

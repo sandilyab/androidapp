@@ -63,7 +63,6 @@ public class TabFragment1 extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tab_fragment1, container, false);
 
-
             txtView = (TextView) v.findViewById(R.id.txtView2);
             String currentDateTimeString = DateFormat.getDateInstance().format(new Date());
 
@@ -74,52 +73,58 @@ public class TabFragment1 extends Fragment {
             txtView.setGravity(Gravity.CENTER);
 
             Button dc = (Button) v.findViewById(R.id.d_button);
-
             dc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     View v = getActivity().getLayoutInflater().inflate(R.layout.dialog, null);
 
                     AlertDialog.Builder builder = new AlertDialog.Builder (getActivity());
+
                     final NumberPicker picker = new NumberPicker(getActivity());
                     picker.setMinValue(0);
-                    picker.setMaxValue(5);
+                    picker.setMaxValue(53);
+
                     final FrameLayout parent = new FrameLayout(getActivity());
                     parent.addView(picker, new FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.WRAP_CONTENT,
                             FrameLayout.LayoutParams.WRAP_CONTENT,
                             Gravity.CENTER));
                     builder.setView(parent);
+
                     builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        //On click for positive button
                         public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent("android.intent.action.VIEW", Uri.parse("http://www..com"));
-                            Bundle b = new Bundle();
-                            b.putBoolean("new_window", true); //sets new window
-                            intent.putExtras(b);
-                            startActivity(intent);
+                            int pickedValue = picker.getValue();
+                            Calendar cal = Calendar.getInstance();
+                            int year = cal.get(Calendar.YEAR);
+                            Calendar cal_rev = Calendar.getInstance();
+                            cal_rev.clear();
+                            cal_rev.set(Calendar.WEEK_OF_YEAR, picker.getValue());
+                            cal_rev.set(Calendar.YEAR, year);
+
+                            //Get first day of week
+                            Date date_rev = cal_rev.getTime();
+                            final String strDate = DateFormat.getDateInstance().format(date_rev);
+                            //Display selected number in new dialog
+                            new AlertDialog.Builder(getActivity())
+                                    .setPositiveButton(android.R.string.ok, null)
+                                    .setTitle("Work Week "+pickedValue+" Starts")
+                                    .setMessage(strDate)
+                                    .create()
+                                    .show();
+                            //Intent intent = new Intent("android.intent.action.VIEW", Uri.parse("http://www..com"));
+                            //Bundle b = new Bundle();
+                            //b.putBoolean("new_window", true); //sets new window
+                            //intent.putExtras(b);
+                            //startActivity(intent);
                         }
                     });
                     builder.setNegativeButton(android.R.string.cancel, null);
                     Dialog dialog = builder.create();
                     dialog.show();
-
-
                 }
             });
 
         return v;
     }
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-
 }
