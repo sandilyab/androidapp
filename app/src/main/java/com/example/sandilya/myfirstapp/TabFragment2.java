@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -50,6 +51,9 @@ public class TabFragment2 extends Fragment {
     TextView updatedOn1, updatedOn2, updatedOn3, updatedOn4;
     TextView weatherIcon1, weatherIcon2, weatherIcon3, weatherIcon4;
     Typeface weatherFont;
+
+    ViewPager viewPager;
+
     public TabFragment2() {
         // Required empty public constructor
     }
@@ -84,12 +88,12 @@ public class TabFragment2 extends Fragment {
             @Override
             public void onRefresh() {
                // final View v = inflater.inflate(R.layout.fragment_tab_fragment2, container, false);
-                Toast.makeText(getContext(), "Refresh", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_SHORT).show();
                 SetWeather(getView());
                 SetWeatherForecast(getView());
                 if(swipeLayout.isRefreshing()) {
                     swipeLayout.setRefreshing(false);
-                    Toast.makeText(getContext(), "Weather Updated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Refresh Completed", Toast.LENGTH_SHORT).show();
                 }
             }
         });

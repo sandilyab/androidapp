@@ -22,6 +22,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.transition.Explode;
@@ -42,7 +43,6 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Date;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.hide();
         //SetTime();
        // SetWeather();
 
@@ -116,8 +118,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+            @Override
+            public void onPageSelected(int position) {
+                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                switch (position) {
+                    case 0:
+                        fab.hide();
+                        break;
+                    case 2:
+                        fab.show();
+                        break;
+                    case 1:
+                        fab.hide();
+                        break;
+                    default:
+                        fab.hide();
+                        break;
+                }
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
+            }
+        });
 
 
         LocationManager lm = (LocationManager)getSystemService(LOCATION_SERVICE);
@@ -140,6 +168,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onClickHandler(View v) {
+        Log.d("test", "onclickk here" );
+        //Intent intent = new Intent(RVAdapter.this,CustomerGetQueueActivity.class);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setCurrentItem(2);
+    }
+
     public void onButtonTap(View v) {
 
             if ( v.getId() == R.id.perc_button) {
@@ -159,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         //TextView txtView = new TextView(this);
         //setContentView(txtView);
     }
+
 
 
     @Override
@@ -206,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
         // show it
         alertDialog.show();
     }
-
 
 
 }

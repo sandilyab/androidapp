@@ -17,7 +17,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         card_view:cardUseCompatPadding="true"
-        card_view:cardElevation="4dp">
+        card_view:cardElevation="4dp"
+        >
 
         <TextView
             android:id="@+id/weather_forecast_icon1"
@@ -169,6 +170,8 @@
         card_view:cardUseCompatPadding="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:clickable="true"
+        android:onClick="onClickHandler"
         >
         <RelativeLayout
             android:layout_width="match_parent"
