@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.example.sandilya.myfirstapp.TabFragment1">
 
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
@@ -52,13 +54,14 @@
 
     <Button
         android:text="Date  Calculator"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:id="@+id/d_button"
         tools:text="date Calc"
         android:textColor="@android:color/white"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         android:layout_marginTop="150dp"
-        android:layout_marginBottom="37dp" />
+        android:elevation="24dp" />
+</RelativeLayout>
 
 </FrameLayout>
