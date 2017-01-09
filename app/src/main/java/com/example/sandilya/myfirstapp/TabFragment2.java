@@ -84,11 +84,12 @@ public class TabFragment2 extends Fragment {
 
 
         swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
+        swipeLayout.setColorSchemeResources(R.color.blue, R.color.green, R.color.orange);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
             @Override
             public void onRefresh() {
                // final View v = inflater.inflate(R.layout.fragment_tab_fragment2, container, false);
-                Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_SHORT).show();
                 SetWeather(getView());
                 SetWeatherForecast(getView());
                 if(swipeLayout.isRefreshing()) {

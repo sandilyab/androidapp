@@ -23,7 +23,7 @@
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
 
     </style>
-    <style name="DialogTheme">
+    <style name="DialogTheme" parent="Theme.AppCompat.Dialog">
         <item name="android:windowEnterAnimation">@anim/slide_top</item>
         <item name="android:windowExitAnimation">@anim/slide_bottom</item>
     </style>

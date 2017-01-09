@@ -37,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -147,6 +148,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "To Do list coming soon", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                final EditText taskEditText = new EditText(getApplicationContext());
+                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Add a new task")
+                        .setMessage("What do you want to do next?")
+                        .setView(taskEditText)
+                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String task = String.valueOf(taskEditText.getText());
+                                Log.d("S", "Task to add: " + task);
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .create();
+                dialog.show();
+            }
+        });
 
         LocationManager lm = (LocationManager)getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
