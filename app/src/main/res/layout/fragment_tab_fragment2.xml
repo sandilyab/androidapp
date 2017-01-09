@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="true"
     android:background="?attr/selectableItemBackground"
     tools:context="com.example.sandilya.myfirstapp.TabFragment2">
 
@@ -10,7 +9,8 @@
 
 
     <include layout="@layout/swipe_refresh_layout_weather"
-        android:visibility="visible" />
+
+        />
 
 
 </FrameLayout>
