@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
@@ -19,9 +22,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -32,17 +37,24 @@ import android.transition.Transition;
 import android.transition.Visibility;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sandilya.myfirstapp.db.TaskContract;
+import com.example.sandilya.myfirstapp.db.TaskDbHelper;
+
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
     private static TextView tv;
     static Dialog d ;
     final Context context = this;
+    private TaskDbHelper mHelper;
+    private ListView mTaskListView;
+    private ArrayAdapter<String> mAdapter;
+
 
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
@@ -83,10 +99,17 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //mHelper = new TaskDbHelper(this);
+        //mTaskListView = (ListView) findViewById(R.id.list_todo);
+        //mTaskListView = (ListView) findViewById(R.id.list_todo);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.hide();
         //SetTime();
        // SetWeather();
+        mHelper = new TaskDbHelper(this);
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Utilities"));
@@ -100,6 +123,13 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
+
+        int item = viewPager.getCurrentItem();
+        Fragment frag = (Fragment) adapter.getItem(2);
+        View container = frag.getView();
+
+
+
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
@@ -162,12 +192,22 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String task = String.valueOf(taskEditText.getText());
-                                Log.d("S", "Task to add: " + task);
+                                Log.d("S", "Task to add MAAA: " + task);
+                                SQLiteDatabase db = mHelper.getWritableDatabase();
+                                ContentValues values = new ContentValues();
+                                values.put(TaskContract.TaskEntry.COL_TASK_TITLE, task);
+                                db.insertWithOnConflict(TaskContract.TaskEntry.TABLE,
+                                        null,
+                                        values,
+                                        SQLiteDatabase.CONFLICT_REPLACE);
+                                db.close();
+                                updateUI();
                             }
                         })
                         .setNegativeButton("Cancel", null)
                         .create();
                 dialog.show();
+
             }
         });
 
@@ -265,6 +305,37 @@ public class MainActivity extends AppCompatActivity {
         // show it
         alertDialog.show();
     }
+    private void updateUI() {
+        RecyclerView recList = (RecyclerView)findViewById(R.id.cardList);
+        ArrayList<String> taskList = new ArrayList<>();
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        Cursor cursor = db.query(TaskContract.TaskEntry.TABLE,
+                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE},
+                null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            int idx = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_TITLE);
+            taskList.add(cursor.getString(idx));
+        }
 
+        cursor.close();
+        db.close();
 
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recList.setLayoutManager(llm);
+
+        ContactAdapter ca = new ContactAdapter(taskList);
+        recList.setAdapter(ca);
+    }
+    public void deleteTask(View view) {
+        View parent = (View) view.getParent();
+        TextView taskTextView = (TextView) findViewById(R.id.txtName);
+        String task = String.valueOf(taskTextView.getText());
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        db.delete(TaskContract.TaskEntry.TABLE,
+                TaskContract.TaskEntry.COL_TASK_TITLE + " = ?",
+                new String[]{task});
+        db.close();
+        updateUI();
+    }
 }

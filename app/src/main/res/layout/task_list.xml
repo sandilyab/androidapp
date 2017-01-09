@@ -22,7 +22,8 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:text="contact det"
+            android:text="Task Title"
+            android:paddingLeft="5dp"
             android:background="@color/colorPrimaryDark"
             android:gravity="center_vertical"
             android:textColor="@android:color/white"
@@ -39,27 +40,17 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"/>
 
-        <TextView
-            android:id="@+id/txtSurname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Surname"
-            android:gravity="center_vertical"
-            android:textSize="10dp"
-            android:layout_below="@id/txtName"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"/>
 
-        <TextView
-            android:id="@+id/txtEmail"
+        <Button
+            android:id="@+id/task_delete"
             android:layout_width="wrap_content"
+            android:layout_marginTop="15dp"
             android:layout_height="wrap_content"
-            android:text="Email"
-            android:textSize="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="150dp"
-            android:layout_alignBaseline="@id/txtName"/>
+            android:textColor="#FFFF"
+            android:onClick="deleteTask"
+            android:text="Done" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

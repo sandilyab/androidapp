@@ -1,6 +1,8 @@
 package com.example.sandilya.myfirstapp;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.sandilya.myfirstapp.db.TaskContract;
+import com.example.sandilya.myfirstapp.db.TaskDbHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +39,11 @@ public class TabFragment3 extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private TaskDbHelper mHelper;
+    private ListView mTaskListView;
+    private RecyclerView rview;
+    private ArrayAdapter<String> mAdapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -56,19 +68,38 @@ public class TabFragment3 extends Fragment {
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_tab_fragment3, container, false);
 
-        RecyclerView recList = (RecyclerView) v.findViewById(R.id.cardList);
-        //recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
-
-        ContactAdapter ca = new ContactAdapter(createList(30));
-        recList.setAdapter(ca);
-
+        mHelper = new TaskDbHelper(getContext());
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        updateUI(v);
 
         return v;
     }
 
+    private void updateUI(View v) {
+
+        RecyclerView recList = (RecyclerView) v.findViewById(R.id.cardList);
+        ArrayList<String> taskList = new ArrayList<>();
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        Cursor cursor = db.query(TaskContract.TaskEntry.TABLE,
+                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE},
+                null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            int idx = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_TITLE);
+            taskList.add(cursor.getString(idx));
+        }
+
+        cursor.close();
+        db.close();
+
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recList.setLayoutManager(llm);
+
+        ContactAdapter ca = new ContactAdapter(taskList);
+        recList.setAdapter(ca);
+        //ca.notifyDataSetChanged();
+
+    }
 
 
     /**
@@ -86,20 +117,5 @@ public class TabFragment3 extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private List<ContactInfo> createList(int size) {
-
-        List<ContactInfo> result = new ArrayList<ContactInfo>();
-        for (int i=1; i <= size; i++) {
-            ContactInfo ci = new ContactInfo();
-            ci.name = ContactInfo.NAME_PREFIX + i;
-            ci.surname = ContactInfo.SURNAME_PREFIX + i;
-            ci.email = ContactInfo.EMAIL_PREFIX + i + "@test.com";
-
-            result.add(ci);
-
-        }
-
-        return result;
-    }
 }
 
