@@ -48,6 +48,7 @@ public class TabFragment3 extends Fragment {
     private TaskDbHelper mHelper;
     private ListView mTaskListView;
     private RecyclerView rview;
+    public ContactAdapter ca;
     private ArrayAdapter<String> mAdapter;
 
     private OnFragmentInteractionListener mListener;
@@ -73,45 +74,29 @@ public class TabFragment3 extends Fragment {
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_tab_fragment3, container, false);
 
-        mHelper = new TaskDbHelper(getContext());
-        SQLiteDatabase db = mHelper.getReadableDatabase();
-        ContactAdapter ca  = updateUI(v);
+
+        //ca.notifyDataSetChanged();
 
         ////RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.cardList);
         //recyclerView.setAdapter(ca);
         //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
+        updateUI(v);
         //ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(ca);
         //mItemTouchHelper = new ItemTouchHelper(callback);
        // mItemTouchHelper.attachToRecyclerView(recyclerView);
 
         return v;
     }
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
+    public void updateUI(View v) {
 
-        View v = getView();
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.cardList);
-        ContactAdapter ca  = updateUI(v);
-        recyclerView.setAdapter(ca);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(ca);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
-
-    }
-
-    private ContactAdapter updateUI(View v) {
-
-        RecyclerView recList = (RecyclerView) v.findViewById(R.id.cardList);
-        ArrayList<String> taskList = new ArrayList<>();
+        //rview = (RecyclerView) v.findViewById(R.id.cardList);
+        mHelper = new TaskDbHelper(getContext());
         SQLiteDatabase db = mHelper.getReadableDatabase();
+
+        ArrayList<String> taskList = new ArrayList<>();
+        //SQLiteDatabase db = mHelper.getReadableDatabase();
         Cursor cursor = db.query(TaskContract.TaskEntry.TABLE,
                 new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE, TaskContract.TaskEntry.COL_TASK_DATE},
                 null, null, null, null, null);
@@ -125,14 +110,16 @@ public class TabFragment3 extends Fragment {
         cursor.close();
         db.close();
 
+        rview = (RecyclerView) v.findViewById(R.id.cardList);
+        ca = new ContactAdapter(taskList);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
-
-        ContactAdapter ca = new ContactAdapter(taskList);
-        recList.setAdapter(ca);
-
-        return ca;
+        rview.setLayoutManager(llm);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(ca);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(rview);
+        rview.setAdapter(ca);
+        ca.notifyDataSetChanged();
     }
 
 
@@ -149,6 +136,10 @@ public class TabFragment3 extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void mymethod () {
+        ca.notifyDataSetChanged();
     }
 
 }

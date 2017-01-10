@@ -29,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Html;
 import android.transition.Explode;
 import android.transition.Fade;
@@ -52,6 +53,8 @@ import android.widget.Toast;
 
 import com.example.sandilya.myfirstapp.db.TaskContract;
 import com.example.sandilya.myfirstapp.db.TaskDbHelper;
+import com.example.sandilya.myfirstapp.touch_util.OnStartDragListener;
+import com.example.sandilya.myfirstapp.touch_util.SimpleItemTouchHelperCallback;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -101,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
         //mHelper = new TaskDbHelper(this);
         //mTaskListView = (ListView) findViewById(R.id.list_todo);
-        //mTaskListView = (ListView) findViewById(R.id.list_todo);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.hide();
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Utilities"));
         tabLayout.addTab(tabLayout.newTab().setText("Today"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tasks"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tasks").setTag("tab3"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
@@ -310,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
         // show it
         alertDialog.show();
     }
-    private void updateUI() {
+    public void updateUI() {
         RecyclerView recList = (RecyclerView)findViewById(R.id.cardList);
         ArrayList<String> taskList = new ArrayList<>();
         SQLiteDatabase db = mHelper.getReadableDatabase();
@@ -323,16 +325,31 @@ public class MainActivity extends AppCompatActivity {
             String s = cursor.getString(idx)+"-_"+cursor.getString(idy);
             taskList.add(s);
         }
-
         cursor.close();
         db.close();
-
+        RecyclerView rview = (RecyclerView) findViewById(R.id.cardList);
+        ContactAdapter ca = new ContactAdapter(taskList);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
+        rview.setLayoutManager(llm);
 
-        ContactAdapter ca = new ContactAdapter(taskList);
-        recList.setAdapter(ca);
+        rview.setAdapter(ca);
+        ca.notifyDataSetChanged();
+        TabFragment3 tf= (TabFragment3) getSupportFragmentManager().findFragmentByTag("tab3");
+        if ( tf != null) {
+            Log.d("S", "CALLINGG");
+            tf.mymethod();
+        }
+
+        Log.d("s", "notifiyng"+taskList.size());
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(ca);
+        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recList);
+        //ca.notifyItemChanged(taskList.size()-1) ;
+
+
+
     }
     public void deleteTask(View view) {
         View parent = (View) view.getParent();
@@ -367,10 +384,10 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         db.close();
 
+
         Integer size = taskList.size();
         if (size >3 ) { size =3;}
         switch (size) {
-
             case 3:
                 t1.setText(taskList.get(0));
                 t2.setText(taskList.get(1));
@@ -387,5 +404,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
         }
     }
+
+
 }
 

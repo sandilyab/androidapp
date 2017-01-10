@@ -45,6 +45,10 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
+        if (source.getItemViewType() != target.getItemViewType()) {
+            return false;
+        }
+
         mAdapter.onItemMove(source.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }
@@ -57,8 +61,11 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-            ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
-            itemViewHolder.onItemSelected();
+            if (viewHolder instanceof ItemTouchHelperViewHolder) {
+                // Let the view holder know that this item is being moved or dragged
+                ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
+                itemViewHolder.onItemSelected();
+            }
         }
 
         super.onSelectedChanged(viewHolder, actionState);
@@ -68,7 +75,10 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
 
-        ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
-        itemViewHolder.onItemClear();
+        if (viewHolder instanceof ItemTouchHelperViewHolder) {
+            // Tell the view holder it's time to restore the idle state
+            ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
+            itemViewHolder.onItemClear();
+        }
     }
 }
