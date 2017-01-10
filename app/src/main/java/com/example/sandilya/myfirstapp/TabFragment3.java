@@ -5,9 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.sandilya.myfirstapp.db.TaskContract;
 import com.example.sandilya.myfirstapp.db.TaskDbHelper;
+import com.example.sandilya.myfirstapp.touch_util.SimpleItemTouchHelperCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,8 @@ public class TabFragment3 extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private ItemTouchHelper mItemTouchHelper;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -70,22 +75,51 @@ public class TabFragment3 extends Fragment {
 
         mHelper = new TaskDbHelper(getContext());
         SQLiteDatabase db = mHelper.getReadableDatabase();
-        updateUI(v);
+        ContactAdapter ca  = updateUI(v);
+
+        ////RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.cardList);
+        //recyclerView.setAdapter(ca);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        //ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(ca);
+        //mItemTouchHelper = new ItemTouchHelper(callback);
+       // mItemTouchHelper.attachToRecyclerView(recyclerView);
 
         return v;
     }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-    private void updateUI(View v) {
+
+        View v = getView();
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.cardList);
+        ContactAdapter ca  = updateUI(v);
+        recyclerView.setAdapter(ca);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(ca);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
+
+    }
+
+    private ContactAdapter updateUI(View v) {
 
         RecyclerView recList = (RecyclerView) v.findViewById(R.id.cardList);
         ArrayList<String> taskList = new ArrayList<>();
         SQLiteDatabase db = mHelper.getReadableDatabase();
         Cursor cursor = db.query(TaskContract.TaskEntry.TABLE,
-                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE},
+                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE, TaskContract.TaskEntry.COL_TASK_DATE},
                 null, null, null, null, null);
         while (cursor.moveToNext()) {
             int idx = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_TITLE);
-            taskList.add(cursor.getString(idx));
+            int idy = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_DATE);
+            String s = cursor.getString(idx)+"-_"+cursor.getString(idy);
+            taskList.add(s);
         }
 
         cursor.close();
@@ -97,8 +131,8 @@ public class TabFragment3 extends Fragment {
 
         ContactAdapter ca = new ContactAdapter(taskList);
         recList.setAdapter(ca);
-        //ca.notifyDataSetChanged();
 
+        return ca;
     }
 
 

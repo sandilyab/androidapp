@@ -1,5 +1,7 @@
 package com.example.sandilya.myfirstapp;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -13,24 +15,36 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.app.FragmentActivity;
 
 
+import com.example.sandilya.myfirstapp.db.TaskContract;
+import com.example.sandilya.myfirstapp.db.TaskDbHelper;
+import com.example.sandilya.myfirstapp.touch_util.SimpleItemTouchHelperCallback;
+
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 import static android.R.id.tabhost;
+import static com.example.sandilya.myfirstapp.R.id.icon;
+import static com.example.sandilya.myfirstapp.R.id.split_action_bar;
 import static com.example.sandilya.myfirstapp.R.id.tab_layout;
 import static com.example.sandilya.myfirstapp.R.id.toolbar;
 
@@ -53,6 +67,8 @@ public class TabFragment2 extends Fragment {
     Typeface weatherFont;
 
     ViewPager viewPager;
+    private TaskDbHelper mHelper;
+    private ArrayAdapter<String> mAdapter;
 
     public TabFragment2() {
         // Required empty public constructor
@@ -75,6 +91,9 @@ public class TabFragment2 extends Fragment {
         SetWeather(v);
         SetWeatherForecast(v);
 
+        mHelper = new TaskDbHelper(getContext());
+        updateUI(v);
+
         //FUTURE CHANGES
         //window.setStatusBarColor(Color.BLUE);
         //((AppCompatActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
@@ -91,6 +110,7 @@ public class TabFragment2 extends Fragment {
                // final View v = inflater.inflate(R.layout.fragment_tab_fragment2, container, false);
                 //Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_SHORT).show();
                 SetWeather(getView());
+                updateUI(v);
                 SetWeatherForecast(getView());
                 if(swipeLayout.isRefreshing()) {
                     swipeLayout.setRefreshing(false);
@@ -98,6 +118,7 @@ public class TabFragment2 extends Fragment {
                 }
             }
         });
+
 
         return v;
     }
@@ -229,5 +250,46 @@ public class TabFragment2 extends Fragment {
                 break;
         }
 
+    }
+
+    public void updateUI(View v) {
+        TextView t1 = (TextView) v.findViewById(R.id.tasks1);
+        TextView t2 = (TextView) v.findViewById(R.id.tasks2);
+        TextView t3 = (TextView) v.findViewById(R.id.tasks3);
+        ArrayList<String> taskList = new ArrayList<>();
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        Cursor cursor = db.query(TaskContract.TaskEntry.TABLE,
+                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE, TaskContract.TaskEntry.COL_TASK_DATE},
+                null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            int idx = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_TITLE);
+            int idy = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_DATE);
+            String s = cursor.getString(idx)+"-_"+cursor.getString(idy);
+            String[] parts = s.split("-_");
+            taskList.add(parts[0]);
+        }
+
+        cursor.close();
+        db.close();
+
+        Integer size = taskList.size();
+        if (size >3 ) { size =3;}
+        switch (size) {
+
+            case 3:
+                t1.setText(taskList.get(0));
+                t2.setText(taskList.get(1));
+                t3.setText(taskList.get(2));
+                return;
+            case 2:
+                t1.setText(taskList.get(0));
+                t2.setText(taskList.get(1));
+                return;
+            case 1:
+                t1.setText(taskList.get(0));
+                return;
+            default:
+                return;
+        }
     }
 }

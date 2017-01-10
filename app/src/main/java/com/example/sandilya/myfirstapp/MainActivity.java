@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
-import android.icu.text.SimpleDateFormat;
+import java.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.location.Criteria;
 import android.location.Location;
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
        // SetWeather();
         mHelper = new TaskDbHelper(this);
         SQLiteDatabase db = mHelper.getReadableDatabase();
-
+        //context.deleteDatabase("com.sandilya.todolist.db");
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Utilities"));
@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                         fab.show();
                         break;
                     case 1:
+
                         fab.hide();
                         break;
                     default:
@@ -196,12 +197,16 @@ public class MainActivity extends AppCompatActivity {
                                 SQLiteDatabase db = mHelper.getWritableDatabase();
                                 ContentValues values = new ContentValues();
                                 values.put(TaskContract.TaskEntry.COL_TASK_TITLE, task);
+                                String dt = DateFormat.getDateTimeInstance().format(new Date());
+                                values.put(TaskContract.TaskEntry.COL_TASK_DATE, dt);
                                 db.insertWithOnConflict(TaskContract.TaskEntry.TABLE,
                                         null,
                                         values,
                                         SQLiteDatabase.CONFLICT_REPLACE);
                                 db.close();
                                 updateUI();
+                                TabFragment2 tab2 = new TabFragment2();
+                                UpdateToday();
                             }
                         })
                         .setNegativeButton("Cancel", null)
@@ -310,11 +315,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> taskList = new ArrayList<>();
         SQLiteDatabase db = mHelper.getReadableDatabase();
         Cursor cursor = db.query(TaskContract.TaskEntry.TABLE,
-                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE},
+                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE, TaskContract.TaskEntry.COL_TASK_DATE},
                 null, null, null, null, null);
         while (cursor.moveToNext()) {
             int idx = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_TITLE);
-            taskList.add(cursor.getString(idx));
+            int idy = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_DATE);
+            String s = cursor.getString(idx)+"-_"+cursor.getString(idy);
+            taskList.add(s);
         }
 
         cursor.close();
@@ -329,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void deleteTask(View view) {
         View parent = (View) view.getParent();
-        TextView taskTextView = (TextView) findViewById(R.id.txtName);
+        TextView taskTextView = (TextView) parent.findViewById(R.id.txtName);
         String task = String.valueOf(taskTextView.getText());
         SQLiteDatabase db = mHelper.getWritableDatabase();
         db.delete(TaskContract.TaskEntry.TABLE,
@@ -337,5 +344,48 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{task});
         db.close();
         updateUI();
+        UpdateToday();
+    }
+
+    public void UpdateToday() {
+        TextView t1 = (TextView) findViewById(R.id.tasks1);
+        TextView t2 = (TextView) findViewById(R.id.tasks2);
+        TextView t3 = (TextView) findViewById(R.id.tasks3);
+        ArrayList<String> taskList = new ArrayList<>();
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        Cursor cursor = db.query(TaskContract.TaskEntry.TABLE,
+                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE, TaskContract.TaskEntry.COL_TASK_DATE},
+                null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            int idx = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_TITLE);
+            int idy = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_DATE);
+            String s = cursor.getString(idx)+"-_"+cursor.getString(idy);
+            String[] parts = s.split("-_");
+            taskList.add(parts[0]);
+        }
+
+        cursor.close();
+        db.close();
+
+        Integer size = taskList.size();
+        if (size >3 ) { size =3;}
+        switch (size) {
+
+            case 3:
+                t1.setText(taskList.get(0));
+                t2.setText(taskList.get(1));
+                t3.setText(taskList.get(2));
+                return;
+            case 2:
+                t1.setText(taskList.get(0));
+                t2.setText(taskList.get(1));
+                return;
+            case 1:
+                t1.setText(taskList.get(0));
+                return;
+            default:
+                return;
+        }
     }
 }
+
