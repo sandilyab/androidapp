@@ -1,6 +1,7 @@
 package com.example.sandilya.myfirstapp;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -101,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Activity.setTaskDescription(new ActivityManager.TaskDescription( "#1a237e"));
 
         //mHelper = new TaskDbHelper(this);
         //mTaskListView = (ListView) findViewById(R.id.list_todo);

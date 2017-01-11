@@ -174,8 +174,8 @@ public class TabFragment3 extends Fragment {
         db.close();
         ca.notifyItemChanged(taskList.size()-1);
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-        itemAnimator.setAddDuration(1000);
-        itemAnimator.setRemoveDuration(1000);
+        //itemAnimator.setAddDuration(1000);
+        //itemAnimator.setRemoveDuration(1000);
         rview.setItemAnimator(itemAnimator);
 
     }

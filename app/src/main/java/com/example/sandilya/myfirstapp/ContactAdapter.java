@@ -56,12 +56,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         Log.d("S", "TO IS "+ toPosition);
         Log.d("S",contactList.size()+"conatct sizes");
 
-
         Collections.swap(contactList, fromPosition, toPosition);
-
-
         notifyItemMoved(fromPosition, toPosition);
-        //notifyItemChanged(fromPosition);
+        notifyItemChanged(fromPosition);
+        notifyItemChanged(toPosition);
         return true;
     }
 
