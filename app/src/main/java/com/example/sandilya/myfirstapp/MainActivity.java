@@ -105,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
         //mHelper = new TaskDbHelper(this);
         //mTaskListView = (ListView) findViewById(R.id.list_todo);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.hide();
+        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        //fab.hide();
         //SetTime();
        // SetWeather();
         mHelper = new TaskDbHelper(this);
@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         int item = viewPager.getCurrentItem();
         Fragment frag = (Fragment) adapter.getItem(2);
         View container = frag.getView();
-
 
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -158,20 +157,20 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onPageSelected(int position) {
-                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
                 switch (position) {
                     case 0:
-                        fab.hide();
+                       // fab.hide();
                         break;
                     case 2:
-                        fab.show();
+                        //fab.show();
                         break;
                     case 1:
 
-                        fab.hide();
+                       // fab.hide();
                         break;
                     default:
-                        fab.hide();
+                       // fab.hide();
                         break;
                 }
             }
@@ -181,42 +180,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "To Do list coming soon", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                final EditText taskEditText = new EditText(getApplicationContext());
-                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Add a new task")
-                        .setMessage("What do you want to do next?")
-                        .setView(taskEditText)
-                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String task = String.valueOf(taskEditText.getText());
-                                Log.d("S", "Task to add MAAA: " + task);
-                                SQLiteDatabase db = mHelper.getWritableDatabase();
-                                ContentValues values = new ContentValues();
-                                values.put(TaskContract.TaskEntry.COL_TASK_TITLE, task);
-                                String dt = DateFormat.getDateTimeInstance().format(new Date());
-                                values.put(TaskContract.TaskEntry.COL_TASK_DATE, dt);
-                                db.insertWithOnConflict(TaskContract.TaskEntry.TABLE,
-                                        null,
-                                        values,
-                                        SQLiteDatabase.CONFLICT_REPLACE);
-                                db.close();
-                                updateUI();
-                                TabFragment2 tab2 = new TabFragment2();
-                                UpdateToday();
-                            }
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .create();
-                dialog.show();
 
-            }
-        });
 
         LocationManager lm = (LocationManager)getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -328,17 +292,16 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         db.close();
         RecyclerView rview = (RecyclerView) findViewById(R.id.cardList);
-        ContactAdapter ca = new ContactAdapter(taskList);
+        ContactAdapter ca = new ContactAdapter();
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rview.setLayoutManager(llm);
 
         rview.setAdapter(ca);
-        ca.notifyDataSetChanged();
+        //ca.notifyDataSetChanged();
         TabFragment3 tf= (TabFragment3) getSupportFragmentManager().findFragmentByTag("tab3");
         if ( tf != null) {
             Log.d("S", "CALLINGG");
-            tf.mymethod();
         }
 
         Log.d("s", "notifiyng"+taskList.size());
@@ -346,7 +309,9 @@ public class MainActivity extends AppCompatActivity {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(ca);
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recList);
+        //ca.notifyDataSetChanged();
         //ca.notifyItemChanged(taskList.size()-1) ;
+
 
 
 
@@ -360,8 +325,14 @@ public class MainActivity extends AppCompatActivity {
                 TaskContract.TaskEntry.COL_TASK_TITLE + " = ?",
                 new String[]{task});
         db.close();
-        updateUI();
-        UpdateToday();
+        RecyclerView rview = (RecyclerView) findViewById(R.id.cardList);
+        ContactAdapter ca = new ContactAdapter();
+        rview.setAdapter(ca);
+
+        //rview.getChildAdapterPosition()
+        //a.removeAt();
+
+
     }
 
     public void UpdateToday() {

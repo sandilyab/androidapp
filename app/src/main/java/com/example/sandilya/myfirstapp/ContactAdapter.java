@@ -1,8 +1,10 @@
 package com.example.sandilya.myfirstapp;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -11,8 +13,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.sandilya.myfirstapp.db.TaskContract;
+import com.example.sandilya.myfirstapp.db.TaskDbHelper;
 import com.example.sandilya.myfirstapp.touch_util.ItemTouchHelperAdapter;
 import com.example.sandilya.myfirstapp.touch_util.ItemTouchHelperViewHolder;
 import com.example.sandilya.myfirstapp.touch_util.OnStartDragListener;
@@ -27,37 +32,43 @@ import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> implements ItemTouchHelperAdapter {
 
-    private ArrayList contactList;
+    ArrayList<String> contactList = new ArrayList<>();
     //private final OnStartDragListener mDragStartListener;
     //private final View.OnClickListener mOnClickListener = new MyOnClickListener();
 
-
-    public ContactAdapter(ArrayList contactList) {
-        this.contactList = contactList;
+    //mDragStartListener = dragLlistener;
+    public ContactAdapter() {
 
     }
-
+    // Insert a new item to the RecyclerView on a predefined position
+    public void insert(int position, String data) {
+        contactList.add(position, data);
+        notifyItemInserted(position);
+    }
+    public void removeAt(int position) {
+        contactList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, contactList.size());
+    }
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         Log.d("S","FROM IS "+fromPosition);
         Log.d("S", "TO IS "+ toPosition);
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(contactList, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(contactList, i, i - 1);
-            }
-        }
+        Log.d("S",contactList.size()+"conatct sizes");
+
+
+        Collections.swap(contactList, fromPosition, toPosition);
+
+
         notifyItemMoved(fromPosition, toPosition);
+        //notifyItemChanged(fromPosition);
         return true;
     }
 
     @Override
     public void onItemDismiss(int position) {
-       contactList.remove(position);
-        notifyItemRemoved(position);
+       //contactList.remove(position);
+        //notifyItemRemoved(position);
     }
 
     @Override
@@ -71,19 +82,29 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         String[] parts = ci.split("-_");
         contactViewHolder.vName.setText(parts[0]);
         contactViewHolder.vDate.setText(parts[1]);
+        final Button button = contactViewHolder.dButton;
+        button.setText("DONE");
+        final int position = i;
+        final String task = parts[0];
 
-        contactViewHolder.mRootView.setOnTouchListener(new View.OnTouchListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent motionEvent) {
-                Log.d("S","CLICKED");
-                //final int adapterPosition = ContactViewHolder.this.getAdapterPosition();
-                //FilmObject film = mFilms.get(adapterPosition);
-                //mDragStartListener.onStartDrag(contactViewHolder);
-                contactViewHolder.getAdapterPosition();
-                //int itemPosition = recyclerView.getChildLayoutPosition(v);
-                return false;
+            public void onClick(View v) {
+                //removeAt(position);
+                Log.d("YOLO", "HEREEEEEEEE");
+                TaskDbHelper mHelper = new TaskDbHelper(button.getContext());
+                SQLiteDatabase db = mHelper.getWritableDatabase();
+                db.delete(TaskContract.TaskEntry.TABLE,
+                        TaskContract.TaskEntry.COL_TASK_TITLE + " = ?",
+                        new String[]{task});
+                db.close();
+                removeAt(position);
             }
         });
+
+        //contactViewHolder.mRootView.setOnTouchListener(new View.OnTouchListener() {
+
+        //});
 
     }
 
@@ -99,6 +120,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
         protected TextView vName;
         protected TextView vDate;
+        public Button dButton;
         public ViewGroup container;
         protected View mRootView;
 
@@ -108,6 +130,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             vName =  (TextView) v.findViewById(R.id.txtName);
             vDate =  (TextView) v.findViewById(R.id.title);
             CardView vCard = (CardView) v.findViewById(R.id.card_view);
+            dButton = (Button) v.findViewById(R.id.task_delete);
             mRootView = v;
 
         }
@@ -121,7 +144,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         @Override
         public void onItemClear() {
             //itemView.setBackgroundColor(0);
+            //int currentPosition = getLayoutPosition() + 1;
         }
     }
+
+
 
 }
