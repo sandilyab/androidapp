@@ -100,6 +100,9 @@ public class Function_weather_forecast {
                 if(json != null){
                     //JSONObject details = json.getJSONArray("weather").getJSONObject(0);
                     //JSONObject main = json.getJSONObject("main");
+                    Date d=new Date();
+                    SimpleDateFormat sdf=new SimpleDateFormat("h a");
+
                     DateFormat df = DateFormat.getTimeInstance();
 
                     //String city = json.getString("name").toUpperCase(Locale.US) + ", " + json.getJSONObject("sys").getString("country");
@@ -138,7 +141,7 @@ public class Function_weather_forecast {
                         JSONObject t_details = list_0.getJSONObject("main");
                         temperature[i] = String.format("%.2f", t_details.getDouble("temp")) + "°";
 
-                        updatedOn[i] = df.format(new Date(list_0.getLong("dt")*1000));
+                        updatedOn[i] = sdf.format(new Date(list_0.getLong("dt")*1000));
 
                         iconText[i] = setWeatherIcon (id[i],day_night[i]);
                     }

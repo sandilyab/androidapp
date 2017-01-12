@@ -194,15 +194,17 @@ public class MainActivity extends AppCompatActivity {
         //Location location = locationManager.getLastKnownLocation(provider);
         //LocationManager lm = (LocationManager)getSystemService(LOCATION_SERVICE);
 
-        Location location = lm.getLastKnownLocation(provider);
-        Log.d("S", "Entering");
-        if(location != null) {
-            Double lat = location.getLatitude();
-            Double lon = location.getLongitude();
-            Log.d("S","shoudl");
-            Log.d("c", lat.toString());
-        }
+        if (false)  {
 
+            Location location = lm.getLastKnownLocation(provider);
+            Log.d("S", "Entering");
+            if (location != null) {
+                Double lat = location.getLatitude();
+                Double lon = location.getLongitude();
+                Log.d("S", "shoudl");
+                Log.d("c", lat.toString());
+            }
+        }
     }
 
     public void onClickHandler(View v) {
