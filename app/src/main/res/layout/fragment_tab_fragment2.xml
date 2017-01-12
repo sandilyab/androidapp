@@ -8,9 +8,8 @@
     <!-- TODO: Update blank fragment layout -->
 
 
+
     <include layout="@layout/swipe_refresh_layout_weather"
-
-        />
-
+        android:visibility="visible" />
 
 </FrameLayout>

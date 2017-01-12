@@ -8,9 +8,14 @@
     android:layout_marginTop="100dp"
     android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:clickable="true"
         >
 
@@ -80,6 +85,6 @@
         />
         <include layout="@layout/card_view_forecast" />
     </RelativeLayout>
-
+</ScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>
 

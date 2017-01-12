@@ -29,13 +29,21 @@ public class Function_weather {
     public static String setWeatherIcon(int actualId, long sunrise, long sunset){
         int id = actualId / 100;
         String icon = "";
-        if(actualId == 800){
+        if(actualId == 800) {
             long currentTime = new Date().getTime();
-            if(currentTime>=sunrise && currentTime<sunset) {
+            if (currentTime >= sunrise && currentTime < sunset) {
                 icon = "&#xf00d;";
             } else {
                 icon = "&#xf02e;";
             }
+        } else if  (actualId == 801) {
+            long currentTime = new Date().getTime();
+            if (currentTime >= sunrise && currentTime < sunset) {
+                icon = "&#xf002;";
+            } else {
+                icon = "&#xf086;";
+            }
+
         } else {
             switch(id) {
                 case 2 : icon = "&#xf01e;";

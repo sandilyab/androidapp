@@ -234,11 +234,11 @@ public class TabFragment2 extends Fragment {
                 break;
             //windy/foggy
             case "&#xf014;":
-                v.setBackgroundColor(Color.parseColor("#90a4ae"));
+                v.setBackgroundColor(Color.parseColor("#bcaaa4"));
                 break;
             //Cloudy
             case "&#xf013;":
-                v.setBackgroundColor(Color.parseColor("#b0bec5"));
+                v.setBackgroundColor(Color.parseColor("#90a4ae"));
                 break;
             //Snow
             case "&#xf01b;":
@@ -248,8 +248,14 @@ public class TabFragment2 extends Fragment {
             case "&#xf019;":
                 v.setBackgroundColor(Color.parseColor("#5c6bc0"));
                 break;
+            case "&#xf002;":
+                v.setBackgroundColor(Color.parseColor("90CAF9"));
+                break;
+            case "&#xf086;":
+                v.setBackgroundColor(Color.parseColor("#448AFF"));
+                break;
         }
-
+        //v.setBackgroundColor(Color.parseColor("#448AFF"));
     }
 
     public void updateUI(View v) {

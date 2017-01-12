@@ -40,6 +40,13 @@ public class Function_weather_forecast {
             } else  {
                 icon = "&#xf02e;";
             }
+        } else if  (actualId == 801) {
+            if (day_night ==1) {
+                icon = "&#xf002;";
+            } else {
+                icon = "&#xf086;";
+            }
+
         } else {
             switch(id) {
                 case 2 : icon = "&#xf01e;";

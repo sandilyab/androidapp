@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="Tab1"
+        android:textColor="@android:color/white"
         android:id="@+id/txtView1"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -61,6 +62,7 @@
         android:id="@+id/txtView2"
         android:textSize="20sp"
         android:textAlignment="center"
+        android:textColor="@android:color/white"
         android:layout_height="100dp"
         android:layout_above="@id/ww_button"/>
 
